@@ -1,0 +1,42 @@
+class Solution {
+  public:
+  bool dfs(int i,int vis[],int pathvis[],vector<int> adj[],int check[]){
+      vis[i]=1;
+      pathvis[i]=1;
+      check[i]=0;
+      for(auto it:adj[i]){
+          if(!vis[it]){
+              if(dfs(it,vis,pathvis,adj,check)){
+                  check[i]=0;
+                  return true;
+              }
+          }
+          else if(pathvis[it]){
+              check[i]=0;
+              return true;
+          }
+      }
+      pathvis[i]=0;
+      check[i]=1;
+      return false;
+      
+  }
+    vector<int> eventualSafeNodes(int V, vector<int> adj[]) {
+        int vis[V]={0};
+        int pathvis[V]={0};
+        int check[V]={0};
+        vector<int> safe;
+        for(int i=0;i<V;i++){
+            if(!vis[i]){
+                dfs(i,vis,pathvis,adj,check);
+            }
+        }
+        for(int i=0;i<V;i++){
+            if(check[i]){
+                safe.push_back(i);
+            }
+        }
+        return safe;
+        // code here
+    }
+};
